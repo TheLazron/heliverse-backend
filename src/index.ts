@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRouter from "./routers/authRouter";
 import userRouter from "./routers/userRouter";
+import teamRouter from "./routers/teamRouter";
 dotenv.config();
 const mongoURL = process.env.MONGO_URL!;
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(userRouter);
+app.use(teamRouter);
 
 mongoose.connect(mongoURL).then(() => {
   app.listen(3000, () => {

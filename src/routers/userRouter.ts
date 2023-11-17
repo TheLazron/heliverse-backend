@@ -1,5 +1,4 @@
-import expres, { Router } from "express";
-import { logUserIn, signUserUp } from "../controllers/authController";
+import express, { Router } from "express";
 import {
   createUser,
   deleteUser,
@@ -8,7 +7,7 @@ import {
   updateUser,
 } from "../controllers/userController";
 
-const userRouter: Router = expres.Router();
+const userRouter: Router = express.Router();
 
 userRouter.get("/users", getAllUsers);
 userRouter.get("/users/:id", getUserById);
