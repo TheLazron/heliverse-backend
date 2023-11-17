@@ -2,6 +2,7 @@ import { z } from "zod";
 import { Domain, Gender } from "../models/users";
 
 const createUserSchema = z.object({
+  id: z.string(),
   email: z.string().email(),
   firstName: z.string().max(40),
   lastName: z.string().max(40),

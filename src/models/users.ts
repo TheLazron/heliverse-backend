@@ -19,6 +19,7 @@ export enum Domain {
 }
 
 export interface UserInterface extends Document {
+  id: Number;
   email: string;
   firstName: string;
   lastname: string;
@@ -28,6 +29,10 @@ export interface UserInterface extends Document {
 }
 
 const UserSchema = new Schema({
+  _id: {
+    type: Number,
+    required: true,
+  },
   email: {
     type: String,
     required: true,

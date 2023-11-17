@@ -35,16 +35,17 @@ const getUserById = (req: Request, res: Response) => {
 };
 
 const createUser = (req: Request, res: Response) => {
-  const { email, firstName, lastName, avatar, domain, gender, available } =
+  const { id, email, firstName, lastName, avatar, domain, gender, available } =
     createUserSchema.parse(req.body);
   User.create({
+    _id: +id,
     email,
     firstName,
     lastName,
     avatar,
     domain,
     gender,
-    available: available as boolean,
+    available,
   })
     .then((user) => {
       res.status(201).json({ user });

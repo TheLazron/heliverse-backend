@@ -12,7 +12,7 @@ const TeamSchema = new Schema({
   },
   members: [
     {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "User",
     },
   ],
