@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(authRouter);
 
 app.use("/", verifyToken);
-app.use(userRouter);
-app.use(teamRouter);
+app.use("/api/", userRouter);
+app.use("/api/", teamRouter);
 
 mongoose.connect(mongoURL).then(() => {
   app.listen(3000, () => {

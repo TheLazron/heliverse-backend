@@ -1,12 +1,35 @@
 import { Request, Response } from "express";
-import User from "../models/users";
+import User, { Domain, Gender } from "../models/users";
 import { createUserSchema, updateUserSchema } from "../schemas/userSchema";
 
 const getAllUsers = (req: Request, res: Response) => {
+  //handling pgination
   const page = parseInt(req.query.page as string) || 1;
   const pageSize = parseInt(req.query.pageSize as string) || 10;
 
-  User.find()
+  //handling searching and filtering
+  const query: any = {};
+  if (req.query.gender) {
+    query.gender = req.query.gender as Gender;
+  }
+
+  if (req.query.domain) {
+    query.domain = req.query.domain as Domain;
+  }
+
+  if (req.query.available) {
+    query.available = req.query.available;
+  }
+
+  if (req.query.name) {
+    const nameRegex = new RegExp(req.query.name as string, "i");
+    query.$or = [
+      { firstName: { $regex: nameRegex } },
+      { lastName: { $regex: nameRegex } },
+    ];
+  }
+
+  User.find(query)
     .skip((page - 1) * pageSize)
     .limit(pageSize)
     .then((users) => {
