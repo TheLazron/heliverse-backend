@@ -20,7 +20,6 @@ export enum Domain {
 
 export interface UserInterface extends Document {
   email: string;
-  password: string;
   firstName: string;
   lastname: string;
   gender: Gender;
@@ -33,11 +32,6 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-  },
-  passwordHash: {
-    type: String,
-    required: true,
-    select: false,
   },
   firstName: {
     type: String,

@@ -15,7 +15,6 @@ const AuthUserSchema = new Schema({
   passwordHash: {
     type: String,
     required: true,
-    select: false,
   },
   username: {
     type: String,
