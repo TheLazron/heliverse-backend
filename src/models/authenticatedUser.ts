@@ -2,7 +2,7 @@ import { Schema, Document, model } from "mongoose";
 
 export interface UserInterface extends Document {
   email: string;
-  password: string;
+  passwordHash: string;
   username: string;
 }
 

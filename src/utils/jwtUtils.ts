@@ -1,4 +1,4 @@
-import { NextFunction } from "express";
+import { NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
 import type { customResponse } from "../types/responseTypes";
 
@@ -29,4 +29,18 @@ const verifyJWT = (token: string, res: customResponse, next: NextFunction) => {
   }
 };
 
-export { generateAccessToken, parseJwt, verifyJWT };
+const verifyToken = (req: Request, res: customResponse, next: NextFunction) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    console.log("provide token");
+    return res
+      .status(401)
+      .json({ message: "Provide with a valid authentication token" });
+  }
+
+  verifyJWT(token, res, next);
+};
+
+export { generateAccessToken, parseJwt, verifyJWT, verifyToken };
