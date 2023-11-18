@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import Team from "../models/team";
 import { createTeamSchema } from "../schemas/teamSchema";
+import { error } from "console";
+import errorResponseHandler from "../utils/errorHandler";
+
 const getTeamByID = (req: Request, res: Response) => {
   const id = req.params.id;
   Team.findById(id)
@@ -9,12 +12,12 @@ const getTeamByID = (req: Request, res: Response) => {
       if (team) {
         res.status(200).json({ team });
       } else {
-        res.status(404).json({ error: "Team not found" });
+        errorResponseHandler(404, res, undefined, "Team not found");
       }
     })
     .catch((error) => {
       console.error("Error retrieving team:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 
@@ -26,7 +29,7 @@ const createTeam = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error creating team:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 

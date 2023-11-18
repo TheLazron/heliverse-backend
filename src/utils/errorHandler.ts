@@ -2,6 +2,7 @@ import { Response } from "express";
 import { ZodError, z } from "zod";
 
 const errorResponseHandler = (
+  status: number,
   res: Response,
   error?: Error | z.ZodError,
   message?: String
@@ -9,11 +10,11 @@ const errorResponseHandler = (
   console.log(error);
 
   if (error instanceof z.ZodError) {
-    res.json({ error: error.issues });
+    res.status(400).json({ error: error.issues, data: null });
     return;
   }
 
-  res.json({ error: message, data: null });
+  res.status(status).json({ error: message, data: null });
   return;
 };
 

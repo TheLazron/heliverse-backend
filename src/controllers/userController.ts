@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User, { Domain, Gender } from "../models/users";
 import { createUserSchema, updateUserSchema } from "../schemas/userSchema";
+import errorResponseHandler from "../utils/errorHandler";
 
 const getAllUsers = (req: Request, res: Response) => {
   //handling pgination
@@ -12,15 +13,13 @@ const getAllUsers = (req: Request, res: Response) => {
   if (req.query.gender) {
     query.gender = req.query.gender as Gender;
   }
-
   if (req.query.domain) {
     query.domain = req.query.domain as Domain;
   }
-
   if (req.query.available) {
     query.available = req.query.available;
   }
-
+  //handling searching across names using regex
   if (req.query.name) {
     const nameRegex = new RegExp(req.query.name as string, "i");
     query.$or = [
@@ -37,7 +36,7 @@ const getAllUsers = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error retrieving users:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 
@@ -53,7 +52,7 @@ const getUserById = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error retrieving user:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 
@@ -75,7 +74,7 @@ const createUser = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error creating user:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 
@@ -97,7 +96,7 @@ const updateUser = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error updating user:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 
@@ -113,7 +112,7 @@ const deleteUser = (req: Request, res: Response) => {
     })
     .catch((error) => {
       console.error("Error deleting user:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, "Internal server error");
     });
 };
 

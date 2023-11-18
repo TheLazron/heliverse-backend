@@ -14,11 +14,11 @@ const signUserUp = (req: Request, res: Response) => {
           res.json({ data: user });
         })
         .catch((err) => {
-          errorResponseHandler(res, err, "Error signing up user");
+          errorResponseHandler(500, res, err, "Error signing up user");
         });
     })
     .catch((err) => {
-      errorResponseHandler(res, err, "Error signing up user");
+      errorResponseHandler(500, res, err, "Error signing up user");
     });
 };
 
@@ -37,20 +37,20 @@ const logUserIn = (req: Request, res: Response) => {
                 user: { found: true, token: token, userId: user.id },
               });
             } else {
-              res.status(401).json({ error: "Incorrect password" });
+              errorResponseHandler(401, res, undefined, `Incorrect password`);
             }
           })
           .catch((error) => {
             console.error("Error comparing passwords:", error);
+            errorResponseHandler(500, res, error, `Internal server error`);
             res.status(500).json({ error: "Internal server error" });
           });
       } else {
-        res.status(401).json({ error: "User not found" });
+        errorResponseHandler(401, res, undefined, `User not found`);
       }
     })
     .catch((error) => {
-      console.error("Error finding user:", error);
-      res.status(500).json({ error: "Internal server error" });
+      errorResponseHandler(500, res, error, `Internal server error`);
     });
 };
 
