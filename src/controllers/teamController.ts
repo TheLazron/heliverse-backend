@@ -4,6 +4,18 @@ import { createTeamSchema } from "../schemas/teamSchema";
 import { error } from "console";
 import errorResponseHandler from "../utils/errorHandler";
 
+const getAllTeams = (req: Request, res: Response) => {
+  Team.find()
+    .populate("members")
+    .then((teams) => {
+      res.status(200).json({ teams });
+    })
+    .catch((error) => {
+      console.error("Error retrieving teams:", error);
+      errorResponseHandler(500, res, error, "Internal server error");
+    });
+};
+
 const getTeamByID = (req: Request, res: Response) => {
   const id = req.params.id;
   Team.findById(id)
@@ -33,4 +45,4 @@ const createTeam = (req: Request, res: Response) => {
     });
 };
 
-export { getTeamByID, createTeam };
+export { getTeamByID, createTeam, getAllTeams };

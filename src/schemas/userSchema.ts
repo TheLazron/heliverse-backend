@@ -2,7 +2,6 @@ import { z } from "zod";
 import { Domain, Gender } from "../models/users";
 
 const createUserSchema = z.object({
-  id: z.string(),
   email: z.string().email(),
   firstName: z.string().max(40),
   lastName: z.string().max(40),
@@ -19,7 +18,7 @@ const updateUserSchema = z
     avatar: z.string().url().optional(),
     domain: z.nativeEnum(Domain).optional(),
     gender: z.nativeEnum(Gender).optional(),
-    available: z.boolean().optional(),
+    available: z.string().optional(),
   })
   .refine(
     (data) => {

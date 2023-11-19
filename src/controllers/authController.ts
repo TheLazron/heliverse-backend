@@ -34,7 +34,7 @@ const logUserIn = (req: Request, res: Response) => {
               const token = generateAccessToken(user.email, user.id);
               res.json({
                 error: null,
-                user: { found: true, token: token, userId: user.id },
+                data: { found: true, token: token, user: user },
               });
             } else {
               errorResponseHandler(401, res, undefined, `Incorrect password`);

@@ -57,20 +57,27 @@ const getUserById = (req: Request, res: Response) => {
 };
 
 const createUser = (req: Request, res: Response) => {
-  const { id, email, firstName, lastName, avatar, domain, gender, available } =
+  const { email, firstName, lastName, avatar, domain, gender, available } =
     createUserSchema.parse(req.body);
-  User.create({
-    _id: +id,
-    email,
-    firstName,
-    lastName,
-    avatar,
-    domain,
-    gender,
-    available,
-  })
-    .then((user) => {
-      res.status(201).json({ user });
+  User.countDocuments()
+    .then((count) => {
+      User.create({
+        _id: count + 1,
+        email,
+        firstName,
+        lastName,
+        avatar,
+        domain,
+        gender,
+        available,
+      })
+        .then((user) => {
+          res.status(201).json({ user });
+        })
+        .catch((error) => {
+          console.error("Error creating user:", error);
+          errorResponseHandler(500, res, error, "Internal server error");
+        });
     })
     .catch((error) => {
       console.error("Error creating user:", error);
